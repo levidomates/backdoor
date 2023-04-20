@@ -90,8 +90,12 @@ if __name__ == '__main__':
                 break
                 
             elif command[:2] != "cd":
+                data = None
                 data = conn.recv(1024)
-                print(data.decode())
+        
+                print(data.decode("ISO-8859-1"))
+        
+     
 
         except KeyboardInterrupt:
             print(bcolors.WARNING + "\n[-] QUIT" + bcolors.ENDC)
